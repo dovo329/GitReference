@@ -81,11 +81,13 @@ static NSString * const titleString = @"GitReference";
         NSString *command = gitCommand[Command];
         NSString *reference = gitCommand[Reference];
         
-        //NSLog(@"command=%@; reference=%@", command, reference);
+        NSLog(@"i=%d; command=%@; reference=%@", i, command, reference);
         
-        commandLabelFrame = CGRectMake(0, (i*2)*[self heightOfReferenceString:command], CGRectGetWidth(scrollViewFrame), [self heightOfReferenceString:command]);
+        //commandLabelFrame = CGRectMake(0, (i*2)*[self heightOfReferenceString:command], CGRectGetWidth(scrollViewFrame), [self heightOfReferenceString:command]);
+        commandLabelFrame = CGRectMake(0, (i*2)*20.0, CGRectGetWidth(scrollViewFrame), 20.0);
         UILabel *commandLabel = [[UILabel alloc] initWithFrame:commandLabelFrame];
-        referenceLabelFrame = CGRectMake(0, ((i+1)*2)*[self heightOfReferenceString:reference], CGRectGetWidth(scrollViewFrame), [self heightOfReferenceString:reference]);
+        //referenceLabelFrame = CGRectMake(0, ((i+1)*2)*[self heightOfReferenceString:reference], CGRectGetWidth(scrollViewFrame), [self heightOfReferenceString:reference]);
+        referenceLabelFrame = CGRectMake(0, ((i+1)*2)*20.0, CGRectGetWidth(scrollViewFrame), 20.0);
         UILabel *referenceLabel = [[UILabel alloc] initWithFrame:referenceLabelFrame];
         commandLabel.text = command;
         referenceLabel.text = reference;
