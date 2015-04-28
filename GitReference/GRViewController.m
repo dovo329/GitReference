@@ -87,7 +87,7 @@ static NSString * const titleString = @"GitReference";
         
         //commandLabelFrame = CGRectMake(0, (i*2)*[self heightOfReferenceString:command], CGRectGetWidth(scrollViewFrame), [self heightOfReferenceString:command]);
         //commandLabelFrame = CGRectMake(0, (i*2)*20.0, CGRectGetWidth(scrollViewFrame), 20.0);
-        commandLabelFrame = CGRectMake(0, currentY, CGRectGetWidth(scrollViewFrame), 20.0);
+        commandLabelFrame = CGRectMake(margin, currentY, CGRectGetWidth(scrollViewFrame)-(2.0*margin), 20.0);
         UILabel *commandLabel = [[UILabel alloc] initWithFrame:commandLabelFrame];
         commandLabel.text = commandString;
         [scrollView addSubview:commandLabel];
@@ -95,7 +95,7 @@ static NSString * const titleString = @"GitReference";
         
         //referenceLabelFrame = CGRectMake(0, ((i+1)*2)*[self heightOfReferenceString:reference], CGRectGetWidth(scrollViewFrame), [self heightOfReferenceString:reference]);
         //referenceLabelFrame = CGRectMake(0, ((i+1)*2)*20.0, CGRectGetWidth(scrollViewFrame), [self heightOfReferenceString:reference]);
-        referenceLabelFrame = CGRectMake(0, currentY, CGRectGetWidth(scrollViewFrame), [self heightOfReferenceString:referenceString]);
+        referenceLabelFrame = CGRectMake(margin, currentY, CGRectGetWidth(scrollViewFrame)-(2.0*margin), [self heightOfReferenceString:referenceString]);
         UILabel *referenceLabel = [[UILabel alloc] initWithFrame:referenceLabelFrame];
         referenceLabel.text = referenceString;
         referenceLabel.numberOfLines = 0;
