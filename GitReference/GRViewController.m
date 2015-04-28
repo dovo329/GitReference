@@ -52,7 +52,9 @@ static NSString * const titleString = @"GitReference";
     
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:scrollViewFrame];
     
-    scrollView.contentSize = CGSizeMake(CGRectGetWidth(windowFrame), CGRectGetHeight(windowFrame)*2.0);
+    NSArray *textArray = [self gitCommands];
+    //scrollView.contentSize = CGSizeMake(CGRectGetWidth(windowFrame), CGRectGetHeight(windowFrame)*2.0);
+    scrollView.contentSize = CGSizeMake(CGRectGetWidth(windowFrame), [textArray count]*90);
     
     CGRect titleFrame = CGRectMake(0, 0, CGRectGetWidth(windowFrame), [self heightOfReferenceString:titleString]);
     
