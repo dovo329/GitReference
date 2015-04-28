@@ -52,9 +52,9 @@ static NSString * const titleString = @"GitReference";
     
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:scrollViewFrame];
     
-    NSArray *textArray = [self gitCommands];
+    //NSArray *textArray = [self gitCommands];
     //scrollView.contentSize = CGSizeMake(CGRectGetWidth(windowFrame), CGRectGetHeight(windowFrame)*2.0);
-    scrollView.contentSize = CGSizeMake(CGRectGetWidth(windowFrame), [textArray count]*90);
+    //scrollView.contentSize = CGSizeMake(CGRectGetWidth(windowFrame), [textArray count]*90);
     
     CGRect titleFrame = CGRectMake(0, 0, CGRectGetWidth(windowFrame), [self heightOfReferenceString:titleString]);
     
@@ -76,27 +76,35 @@ static NSString * const titleString = @"GitReference";
                                                      forKeys:[textArray valueForKey:@"command"]];
     NSLog(@"%@", dict);*/
     
-    int i=1;
+    int currentY=20+20;
     CGRect commandLabelFrame;
     CGRect referenceLabelFrame;
     for (NSDictionary *gitCommand in [self gitCommands]) {
-        NSString *command = gitCommand[Command];
-        NSString *reference = gitCommand[Reference];
+        NSString *commandString = gitCommand[Command];
+        NSString *referenceString = gitCommand[Reference];
         
-        NSLog(@"i=%d; command=%@; reference=%@", i, command, reference);
+        NSLog(@"currentY=%d; command=%@; reference=%@", currentY, commandString, referenceString);
         
         //commandLabelFrame = CGRectMake(0, (i*2)*[self heightOfReferenceString:command], CGRectGetWidth(scrollViewFrame), [self heightOfReferenceString:command]);
-        commandLabelFrame = CGRectMake(0, (i*2)*20.0, CGRectGetWidth(scrollViewFrame), 20.0);
+        //commandLabelFrame = CGRectMake(0, (i*2)*20.0, CGRectGetWidth(scrollViewFrame), 20.0);
+        commandLabelFrame = CGRectMake(0, currentY, CGRectGetWidth(scrollViewFrame), 20.0);
         UILabel *commandLabel = [[UILabel alloc] initWithFrame:commandLabelFrame];
-        //referenceLabelFrame = CGRectMake(0, ((i+1)*2)*[self heightOfReferenceString:reference], CGRectGetWidth(scrollViewFrame), [self heightOfReferenceString:reference]);
-        referenceLabelFrame = CGRectMake(0, ((i+1)*2)*20.0, CGRectGetWidth(scrollViewFrame), 20.0);
-        UILabel *referenceLabel = [[UILabel alloc] initWithFrame:referenceLabelFrame];
-        commandLabel.text = command;
-        referenceLabel.text = reference;
+        commandLabel.text = commandString;
         [scrollView addSubview:commandLabel];
+        currentY += 20.0+margin;
+        
+        //referenceLabelFrame = CGRectMake(0, ((i+1)*2)*[self heightOfReferenceString:reference], CGRectGetWidth(scrollViewFrame), [self heightOfReferenceString:reference]);
+        //referenceLabelFrame = CGRectMake(0, ((i+1)*2)*20.0, CGRectGetWidth(scrollViewFrame), [self heightOfReferenceString:reference]);
+        referenceLabelFrame = CGRectMake(0, currentY, CGRectGetWidth(scrollViewFrame), [self heightOfReferenceString:referenceString]);
+        UILabel *referenceLabel = [[UILabel alloc] initWithFrame:referenceLabelFrame];
+        referenceLabel.text = referenceString;
+        referenceLabel.numberOfLines = 0;
         [scrollView addSubview:referenceLabel];
-        i+=2;
+        
+        currentY += CGRectGetHeight(referenceLabelFrame)+margin;
     }
+    currentY += margin;
+    scrollView.contentSize = CGSizeMake(CGRectGetWidth(windowFrame), currentY);
     
 /*    NSDictionary *textDictionary = [self gitCommands];
     for (int i=0; i<[textDictionary count]; i++) {
