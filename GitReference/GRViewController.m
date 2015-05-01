@@ -8,16 +8,19 @@
 
 #import "GRViewController.h"
 
+static const CGFloat margin = 15;
+static const CGFloat topMargin = 20;
+static const CGFloat kStatusBarHeight = 20;
+static NSString * const Command = @"command";
+static NSString * const Reference = @"reference";
+static NSString * const titleString = @"GitReference";
+
+
 @interface GRViewController ()
 
 @end
 
 @implementation GRViewController
-
-static CGFloat margin = 15;
-static NSString * const Command = @"command";
-static NSString * const Reference = @"reference";
-static NSString * const titleString = @"GitReference";
 
 
 - (NSArray *)gitCommands {
@@ -48,89 +51,56 @@ static NSString * const titleString = @"GitReference";
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     CGRect windowFrame = [[UIScreen mainScreen] bounds];
-    CGRect scrollViewFrame = CGRectMake(0, 20, CGRectGetWidth(windowFrame), CGRectGetHeight(windowFrame));
+    CGRect scrollViewFrame = CGRectMake(0, topMargin, self.view.frame.size.width, self.view.frame.size.height-topMargin);
     
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:scrollViewFrame];
+    [self.view addSubview:scrollView];
     
-    //NSArray *textArray = [self gitCommands];
-    //scrollView.contentSize = CGSizeMake(CGRectGetWidth(windowFrame), CGRectGetHeight(windowFrame)*2.0);
-    //scrollView.contentSize = CGSizeMake(CGRectGetWidth(windowFrame), [textArray count]*90);
-    
-    CGRect titleFrame = CGRectMake(0, 0, CGRectGetWidth(windowFrame), [self heightOfReferenceString:titleString]);
+    CGRect titleFrame = CGRectMake(0, 0, CGRectGetWidth(windowFrame), 2.0*[self heightOfReferenceString:titleString]);
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:titleFrame];
     [titleLabel setText:titleString];
     titleLabel.textColor = [UIColor blackColor];
-    titleLabel.textAlignment = UITextAlignmentCenter;
+    titleLabel.font = [UIFont boldSystemFontOfSize:30];
+    titleLabel.textAlignment = NSTextAlignmentCenter;
     
-    [self.view addSubview:scrollView];
     [scrollView addSubview:titleLabel];
 
-    CGRect currentLineTextFrame;
-    /*NSString *currentLineString;
-    NSArray *textArray = [self gitCommands];
-    for (int i=0; i<[textArray count]; i++) {
-        //NSLog(@"textArray[%d] = %@", i, [textArray objectAtIndex:i]);
-    }
-    NSDictionary* dict = [NSDictionary dictionaryWithObjects:textArray
-                                                     forKeys:[textArray valueForKey:@"command"]];
-    NSLog(@"%@", dict);*/
-    
-    int currentY=20+20;
+
+    //int currentY=statusBar+heightOfTitleLabel;
+    int currentY=kStatusBarHeight + titleFrame.size.height;
     CGRect commandLabelFrame;
     CGRect referenceLabelFrame;
     for (NSDictionary *gitCommand in [self gitCommands]) {
-        NSString *commandString = gitCommand[Command];
-        NSString *referenceString = gitCommand[Reference];
+        NSString *commandString = [gitCommand valueForKey:@"command"];
+        NSString *referenceString = [gitCommand valueForKey:@"reference"];
         
-        NSLog(@"currentY=%d; command=%@; reference=%@", currentY, commandString, referenceString);
+        //NSLog(@"currentY=%d; command=%@; reference=%@", currentY, commandString, referenceString);
         
-        //commandLabelFrame = CGRectMake(0, (i*2)*[self heightOfReferenceString:command], CGRectGetWidth(scrollViewFrame), [self heightOfReferenceString:command]);
-        //commandLabelFrame = CGRectMake(0, (i*2)*20.0, CGRectGetWidth(scrollViewFrame), 20.0);
-        commandLabelFrame = CGRectMake(margin, currentY, CGRectGetWidth(scrollViewFrame)-(2.0*margin), 20.0);
+        commandLabelFrame = CGRectMake(margin, currentY, CGRectGetWidth(scrollViewFrame)-(2.0*margin), [self heightOfReferenceString:commandString]);
         UILabel *commandLabel = [[UILabel alloc] initWithFrame:commandLabelFrame];
         commandLabel.text = commandString;
+        commandLabel.numberOfLines = 0;
+        [commandLabel sizeToFit];
         [scrollView addSubview:commandLabel];
-        currentY += 20.0+margin;
+        currentY += CGRectGetHeight(commandLabelFrame)+margin;
         
-        //referenceLabelFrame = CGRectMake(0, ((i+1)*2)*[self heightOfReferenceString:reference], CGRectGetWidth(scrollViewFrame), [self heightOfReferenceString:reference]);
-        //referenceLabelFrame = CGRectMake(0, ((i+1)*2)*20.0, CGRectGetWidth(scrollViewFrame), [self heightOfReferenceString:reference]);
         referenceLabelFrame = CGRectMake(margin, currentY, CGRectGetWidth(scrollViewFrame)-(2.0*margin), [self heightOfReferenceString:referenceString]);
         UILabel *referenceLabel = [[UILabel alloc] initWithFrame:referenceLabelFrame];
         referenceLabel.text = referenceString;
         referenceLabel.numberOfLines = 0;
+        [referenceLabel sizeToFit];
         [scrollView addSubview:referenceLabel];
         
-        currentY += CGRectGetHeight(referenceLabelFrame)+margin;
+        currentY += CGRectGetHeight(referenceLabelFrame)+(margin*2.0);
     }
-    currentY += margin;
     scrollView.contentSize = CGSizeMake(CGRectGetWidth(windowFrame), currentY);
     
-/*    NSDictionary *textDictionary = [self gitCommands];
-    for (int i=0; i<[textDictionary count]; i++) {
-        currentLineString = [textDictionary objectForKey:@"Command"];
-        NSLog(@"currentLineString = %@", currentLineString);
-        currentLineString = [textDictionary objectForKey:@"Reference"];
-        NSLog(@"currentLineString = %@", currentLineString);
-        currentLineTextFrame = CGRectMake(0, 40+(i*[self heightOfReferenceString:currentLineString]), CGRectGetWidth(windowFrame), [self heightOfReferenceString:currentLineString]);
-        UILabel *line = [[UILabel alloc] initWithFrame:currentLineTextFrame];
-        
-    }*/
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
